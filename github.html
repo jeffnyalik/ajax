@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+            padding-left: 20px;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .user_name {
+            background: #128c7e;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="button" class="btn btn-primary btn-lg">Fetch Users!</button>
+    <div id="UsersText"></div>
+    <script>
+        document.getElementById('button').addEventListener('click', loadText);
+
+        function loadText() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://api.github.com/users', true);
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    var users = JSON.parse(this.responseText);
+                    output = "";
+                    for (var i in users) {
+                        output += '<div class = "user_name">' +
+                            '<img src="' + users[i].avatar_url + '" width="70" height="70">' +
+                            '<ol>' +
+                            '<li> ID: ' + users[i].id + '</li>' +
+                            '<li> Name: ' + users[i].login + '</li>' +
+                            // '<li> Url: ' + users[i].url + '</li>' +
+                            // '<li> Followers: ' + users[i].followers_url + '</li>' +
+                            // '<li> Users: ' + users[i].repos_url + '</li>' +
+                            // '<li> Events: ' + users[i].events_url + '</li>' +
+                            '<li> Organization: ' + users[i].organizations_url + '</li>' +
+                            '</ol>' +
+                            '</div>';
+                    }
+                    document.getElementById('UsersText').innerHTML = output;
+                }
+            }
+            xhr.send();
+        }
+    </script>
+</body>
+
+</html>
